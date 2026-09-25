@@ -1,0 +1,564 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --navy: #0f172a;
+  --navy-light: #1e293b;
+  --background: #f8fafc;
+  --white: #ffffff;
+  --text: #0f172a;
+  --text-light: #64748b;
+  --border: #e2e8f0;
+  --danger: #dc2626;
+  --danger-dark: #b91c1c;
+  --success: #16a34a;
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --radius: 12px;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+nav {
+  width: 100%;
+  min-height: 72px;
+  padding: 0 7%;
+
+  background: var(--navy);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+
+/* Website Logo */
+
+nav h2 {
+  color: var(--white);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+
+/* Navigation Links */
+
+nav div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  padding: 10px 15px;
+  border-radius: 8px;
+
+  transition: all 0.25s ease;
+}
+
+
+/* Hover */
+
+nav a:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================
+   MAIN PAGE CONTAINER
+========================================= */
+
+body > div {
+  width: 100%;
+}
+
+
+/* Page Content */
+
+main,
+.page-container,
+div:has(> h1) {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 50px 25px;
+}
+
+
+/* =========================================
+   HEADINGS
+========================================= */
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--navy);
+
+  margin-bottom: 30px;
+
+  letter-spacing: -0.7px;
+}
+
+h2 {
+  color: var(--navy);
+}
+
+p {
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   FORMS
+========================================= */
+
+form {
+  width: 100%;
+  max-width: 600px;
+
+  background: var(--white);
+
+  padding: 35px;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  box-shadow: var(--shadow);
+
+  margin: 0 auto;
+}
+
+
+/* Form Groups */
+
+form > div {
+  margin-bottom: 22px;
+}
+
+
+/* Labels */
+
+label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #334155;
+}
+
+
+/* Inputs */
+
+input {
+  width: 100%;
+
+  height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 8px;
+
+  outline: none;
+
+  font-size: 15px;
+
+  color: var(--text);
+
+  background: #ffffff;
+
+  transition: all 0.2s ease;
+}
+
+
+/* Input Focus */
+
+input:focus {
+  border-color: var(--primary);
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+/* Placeholder */
+
+input::placeholder {
+  color: #94a3b8;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button {
+  border: none;
+
+  background: var(--primary);
+
+  color: var(--white);
+
+  padding: 12px 22px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+
+button:hover {
+  background: var(--primary-dark);
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 7px 18px rgba(37, 99, 235, 0.25);
+}
+
+
+button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   DELETE BUTTON
+========================================= */
+
+.delete-btn {
+  background: var(--danger);
+
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.18);
+}
+
+.delete-btn:hover {
+  background: var(--danger-dark);
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background: var(--white);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  box-shadow: var(--shadow);
+}
+
+
+/* Table Header */
+
+thead {
+  background: var(--navy);
+}
+
+thead th {
+  color: var(--white);
+
+  text-align: left;
+
+  padding: 16px 18px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+}
+
+
+/* Table Body */
+
+tbody td {
+  padding: 16px 18px;
+
+  border-bottom: 1px solid var(--border);
+
+  color: #334155;
+
+  font-size: 14px;
+}
+
+
+/* Row Hover */
+
+tbody tr {
+  transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+
+/* Last Row */
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* =========================================
+   HORIZONTAL TABLE SCROLL
+========================================= */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+
+/* =========================================
+   HOME PAGE
+========================================= */
+
+.home {
+  min-height: calc(100vh - 72px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 40px 20px;
+}
+
+
+.home-content {
+  max-width: 750px;
+}
+
+
+.home h1 {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+
+.home p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+
+/* =========================================
+   UPDATE PAGE
+========================================= */
+
+.update-roll {
+  margin-bottom: 30px;
+  padding-bottom: 25px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+
+/* =========================================
+   DELETE PAGE
+========================================= */
+
+.delete-page form {
+  max-width: 500px;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  nav {
+    padding: 0 4%;
+  }
+
+  nav h2 {
+    font-size: 19px;
+  }
+
+  nav div {
+    gap: 2px;
+  }
+
+  nav a {
+    padding: 9px 10px;
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .home h1 {
+    font-size: 40px;
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+
+  /* Navbar */
+
+  nav {
+    padding: 15px 20px;
+
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  nav h2 {
+    font-size: 18px;
+  }
+
+  nav div {
+    width: 100%;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 4px;
+  }
+
+  nav a {
+    font-size: 13px;
+
+    padding: 8px 10px;
+  }
+
+
+  /* Page */
+
+  main,
+  .page-container,
+  div:has(> h1) {
+    padding: 35px 18px;
+  }
+
+
+  /* Heading */
+
+  h1 {
+    font-size: 25px;
+
+    margin-bottom: 22px;
+  }
+
+
+  /* Form */
+
+  form {
+    padding: 24px 20px;
+  }
+
+
+  /* Inputs */
+
+  input {
+    height: 44px;
+  }
+
+
+  /* Button */
+
+  button {
+    width: 100%;
+
+    padding: 13px;
+  }
+
+
+  /* Home */
+
+  .home {
+    min-height: calc(100vh - 130px);
+  }
+
+  .home h1 {
+    font-size: 32px;
+  }
+
+  .home p {
+    font-size: 15px;
+  }
+
+
+  /* Table */
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 650px;
+  }
+
+  thead th,
+  tbody td {
+    padding: 13px 14px;
+  }
+
+}
