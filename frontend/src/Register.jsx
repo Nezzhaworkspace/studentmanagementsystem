@@ -36,7 +36,12 @@ function Register() {
 
       console.log(error);
 
-      alert("Something went wrong!");
+      const detail = error.response?.data?.detail;
+      const message = Array.isArray(detail)
+        ? detail.map((d) => d.msg).join(", ")
+        : detail || "Something went wrong!";
+
+      alert(message);
 
     }
 

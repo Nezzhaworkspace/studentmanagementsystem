@@ -6,34 +6,30 @@ function Allstudents() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  async function getStudents() {
-
-    try {
-
-      const response = await api.get("/studentslist");
-
-      console.log(response.data);
-
-      setStudents(response.data);
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Unable to fetch students");
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  }
-
   useEffect(() => {
+    let isMounted = true;
 
-    getStudents();
+    api.get("/studentslist")
+      .then((response) => {
+        if (isMounted) {
+          setStudents(response.data);
+        }
+      })
+      .catch((error) => {
+        if (isMounted) {
+          const detail = error.response?.data?.detail;
+          alert(detail || "Unable to fetch students");
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
+      });
 
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
 

@@ -33,7 +33,12 @@ function Delete() {
 
       console.log(error);
 
-      alert("Unable to delete student");
+      const detail = error.response?.data?.detail;
+      const message = Array.isArray(detail)
+        ? detail.map((d) => d.msg).join(", ")
+        : detail || "Unable to delete student";
+
+      alert(message);
 
     }
 

@@ -68,7 +68,12 @@ function Update() {
 
       console.log(error);
 
-      alert("Unable to update student");
+      const detail = error.response?.data?.detail;
+      const message = Array.isArray(detail)
+        ? detail.map((d) => d.msg).join(", ")
+        : detail || "Unable to update student";
+
+      alert(message);
 
     }
 
