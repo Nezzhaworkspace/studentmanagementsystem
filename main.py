@@ -25,4 +25,4 @@ app.include_router(router)
 
 @app.get("/")
 def greet():
-    return {"message":"hello"}
+    return {"message": "Student Management API is running"}

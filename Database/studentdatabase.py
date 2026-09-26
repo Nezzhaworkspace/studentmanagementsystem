@@ -1,11 +1,26 @@
+import os
+
 from pymongo import MongoClient
+from pymongo.collection import Collection
 
-ConnectionString = MongoClient ("mongodb+srv://nehabombe2001_db_user:C6nznpO7vh4z4pmG@cluster0.whabr5c.mongodb.net/?appName=Cluster0")
-database = ConnectionString["StudentManagement"]
+_connection: MongoClient | None = None
+_connection_settings: tuple[str, str, str] | None = None
 
-collection = database["STDCollection1"]     
 
-#jj9ymatIoEg9NwlB
-#mongodb+srv://nehabombe2001_db_user:<db_password>jj9ymatIoEg9NwlB@cluster0.whabr5c.mongodb.net/?appName=Cluster0
-# mongodb+srv://nehabombe2001_db_user:<db_password>@cluster0.whabr5c.mongodb.net/?appName=Cluster0
-# C6nznpO7vh4z4pmG
+def get_collection() -> Collection:
+	global _connection, _connection_settings
+
+	mongodb_uri = os.getenv("MONGODB_URI")
+	if not mongodb_uri:
+		raise RuntimeError("MONGODB_URI environment variable is required")
+
+	settings = (
+		mongodb_uri,
+		os.getenv("MONGODB_DATABASE", "StudentManagement"),
+		os.getenv("MONGODB_COLLECTION", "STDCollection1"),
+	)
+	if _connection is None or _connection_settings != settings:
+		_connection = MongoClient(mongodb_uri, serverSelectionTimeoutMS=5000)
+		_connection_settings = settings
+
+	return _connection[settings[1]][settings[2]]

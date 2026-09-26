@@ -1,10 +1,10 @@
-from pydantic import BaseModel,Field
-from typing import Annotated
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class StudentStruct(BaseModel):
-    roll:Annotated[int,Field(title="enter the roll")]
-    name:Annotated[str,Field(title="enter the name")]
-    age:Annotated[int,Field(title="enter the age")]
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
 
-    
+    roll: int = Field(gt=0, title="Student roll number")
+    name: str = Field(title="Student name", min_length=1)
+    age: int = Field(title="Student age", gt=0)
+    email: EmailStr = Field(title="Student email")

@@ -1,63 +1,88 @@
-from fastapi import APIRouter
-from Controller.studentcontroller import CreateStudent
+from fastapi import APIRouter, HTTPException, status
+from pymongo.errors import PyMongoError
+
+from Database.studentdatabase import get_collection
 from Model.studentmodel import StudentStruct
-from Database.studentdatabase import collection
 from Model.updatemodel import UpdateStruct
-# from Model.studentUpdate import updateStruct
-# from DataBase.dbconnection import collection
+
+router = APIRouter()
 
 
-router= APIRouter()
+def _get_collection():
+    try:
+        return get_collection()
+    except RuntimeError as error:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database is not configured",
+        ) from error
+    except PyMongoError as error:
+        raise _database_unavailable(error) from error
+
+
+def _database_unavailable(error: PyMongoError) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail="Database is unavailable",
+    )
+
 
 @router.post("/createStudent")
-def CreateStudent(student:StudentStruct):
-    sroll=student.roll
-    sname=student.name
-    sage=student.age
-
-
-    sinfo={
-          "roll":sroll,
-          "name":sname,
-          "age":sage
-         }
-
-    collection.insert_one(sinfo)
-
-    return {"message":"student created"}
-
-def create(student:StudentStruct):
-    return CreateStudent(student)
-
-@router.put("/edit/{roll}")
-def UpdateStudent(roll:int,student:UpdateStruct):
-    alldata = list(collection.find({},{"_id":0}))
-
-    UpdateStudent = {}
-
-
-    for i in alldata:
-        if i["roll"]==roll:
-
-            if student.name != None:
-                UpdateStudent["name"]=student.name
-
-            if student.age != None:
-                UpdateStudent["age"]=student.age
-
-            collection.update_one(
-                {"roll":roll},
-                {"$set":UpdateStudent}
+def create_student(student: StudentStruct):
+    collection = _get_collection()
+    try:
+        if collection.find_one({"roll": student.roll}, {"_id": 1}):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Student already exists",
             )
 
-            return{"message": "student updated"}
+        collection.insert_one(student.model_dump())
+    except PyMongoError as error:
+        raise _database_unavailable(error) from error
+    return {"message": "Student created successfully"}
+
+
+@router.get("/studentslist")
+def get_students():
+    collection = _get_collection()
+    try:
+        return list(collection.find({}, {"_id": 0}).sort("roll", 1))
+    except PyMongoError as error:
+        raise _database_unavailable(error) from error
+
+
+@router.put("/edit/{roll}")
+def update_student(roll: int, student: UpdateStruct):
+    if roll <= 0:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Roll must be positive")
+
+    update_data = student.model_dump(exclude_none=True)
+    if not update_data:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="At least one field is required")
+
+    collection = _get_collection()
+    try:
+        result = collection.update_one({"roll": roll}, {"$set": update_data})
+    except PyMongoError as error:
+        raise _database_unavailable(error) from error
+    if result.matched_count == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Student not found")
+
+    return {"message": "Student updated successfully"}
 
 
 @router.delete("/delet/{roll}")
-def Deletstudent(roll:int):
-    alldata= list(collection.find({},{"_id":0}))
+def delete_student(roll: int):
+    if roll <= 0:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Roll must be positive")
 
-    for i in alldata:
-        if i["roll"]==roll:
-            collection.delete_one({"roll":roll})
-            return{"message":"student deleted "}
+    collection = _get_collection()
+    try:
+        result = collection.delete_one({"roll": roll})
+    except PyMongoError as error:
+        raise _database_unavailable(error) from error
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Student not found")
+
+    return {"message": "Student deleted successfully"}
