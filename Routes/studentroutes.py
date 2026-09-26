@@ -44,6 +44,7 @@ def create_student(student: StudentStruct):
 
 
 @router.get("/studentslist")
+@router.get("/allstudents")
 def get_students():
     collection = _get_collection()
     try:
@@ -53,6 +54,7 @@ def get_students():
 
 
 @router.put("/edit/{roll}")
+@router.put("/update/{roll}")
 def update_student(roll: int, student: UpdateStruct):
     if roll <= 0:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Roll must be positive")
@@ -73,6 +75,7 @@ def update_student(roll: int, student: UpdateStruct):
 
 
 @router.delete("/delet/{roll}")
+@router.delete("/delete/{roll}")
 def delete_student(roll: int):
     if roll <= 0:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Roll must be positive")

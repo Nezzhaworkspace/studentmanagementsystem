@@ -81,7 +81,7 @@ function Allstudents() {
 
                   <td>{student.age}</td>
 
-                  <td>{student.email}</td>
+                  <td>{student.email || "-"}</td>
 
                 </tr>
 

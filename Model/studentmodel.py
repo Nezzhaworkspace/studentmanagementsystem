@@ -7,4 +7,4 @@ class StudentStruct(BaseModel):
     roll: int = Field(gt=0, title="Student roll number")
     name: str = Field(title="Student name", min_length=1)
     age: int = Field(title="Student age", gt=0)
-    email: EmailStr = Field(title="Student email")
+    email: EmailStr | None = Field(default=None, title="Student email")
